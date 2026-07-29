@@ -1,0 +1,27 @@
+{
+  "name": "البراق | سوقك اليومي",
+  "short_name": "البراق",
+  "description": "سوق افتراضي يجمع محلات السوبرماركت والمخابز والصيدليات ويوصلك طلبك خلال 15-30 دقيقة",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F5EF",
+  "theme_color": "#173A63",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
