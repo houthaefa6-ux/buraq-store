@@ -10,7 +10,7 @@
    بعد أي تعديل على الموقع: ارفع الرقم في CACHE_VERSION لتحديث الكاش.
    ======================================================================= */
 
-const CACHE_VERSION = 'buraq-v1';
+const CACHE_VERSION = 'buraq-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -22,10 +22,22 @@ const CORE_ASSETS = [
   './icons/apple-touch-icon.png'
 ];
 
+// ملفات خط «موج» — ملف مستقل لكل فئة نصية (تُخزَّن منفصلة حتى لا يُفشلها غياب ملف آخر)
+const FONT_ASSETS = [
+  './fonts/Mawj-MainHeading.woff2',
+  './fonts/Mawj-IntroHeading.woff2',
+  './fonts/Mawj-SubHeading.woff2',
+  './fonts/Mawj-SectionHeading.woff2',
+  './fonts/Mawj-Body.woff2'
+];
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
-      .then((cache) => cache.addAll(CORE_ASSETS).catch(() => {}))
+      .then((cache) => Promise.all([
+        cache.addAll(CORE_ASSETS).catch(() => {}),
+        cache.addAll(FONT_ASSETS).catch(() => {})
+      ]))
       .then(() => self.skipWaiting())
   );
 });
@@ -53,7 +65,7 @@ self.addEventListener('fetch', (event) => {
   let url;
   try { url = new URL(req.url); } catch (e) { return; }
 
-  // 2) لا نتدخّل في أي طلب خارج نطاق الموقع (Supabase، خطوط Google، صور خارجية)
+  // 2) لا نتدخّل في أي طلب خارج نطاق الموقع (Supabase، صور خارجية)
   if (url.origin !== self.location.origin) return;
 
   // 3) لا نلمس روابط رجوع تسجيل الدخول

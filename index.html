@@ -9,7 +9,7 @@
      تتجاهلها المتصفحات تمامًا عند وضعها في وسم <meta>. ضُبطت في رؤوس HTTP
      حقيقية عبر ملف "_headers" (Netlify / Cloudflare Pages) و "vercel.json"
      ومقاطع nginx/apache المرفقة في SECURITY-HEADERS.md — راجعها عند الرفع. -->
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self';">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>
 (function(){
@@ -31,10 +31,20 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" href="icons/icon-192.png" type="image/png">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/Mawj-Body.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Mawj-MainHeading.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* =====================================================================
+   الخطوط — خط «موج» (Mawj Regular) مستضاف محليًا في مجلد fonts/
+   لكل فئة نصية ملف مستقل. الملف الأصلي يحتوي وزنًا واحدًا فقط (Regular 400)
+   بلا مائل ولا محاور متغيّرة، لذلك كل الملفات تحمل الرسم نفسه والوزن نفسه؛
+   التمييز بين الفئات يتم بالحجم وارتفاع السطر من المتغيّرات أدناه.
+   ===================================================================== */
+@font-face{font-family:'Mawj Main Heading';src:url('fonts/Mawj-MainHeading.woff2') format('woff2');font-weight:var(--fw-regular);font-style:normal;font-display:swap;}
+@font-face{font-family:'Mawj Intro Heading';src:url('fonts/Mawj-IntroHeading.woff2') format('woff2');font-weight:var(--fw-regular);font-style:normal;font-display:swap;}
+@font-face{font-family:'Mawj Sub Heading';src:url('fonts/Mawj-SubHeading.woff2') format('woff2');font-weight:var(--fw-regular);font-style:normal;font-display:swap;}
+@font-face{font-family:'Mawj Section Heading';src:url('fonts/Mawj-SectionHeading.woff2') format('woff2');font-weight:var(--fw-regular);font-style:normal;font-display:swap;}
+@font-face{font-family:'Mawj Body';src:url('fonts/Mawj-Body.woff2') format('woff2');font-weight:var(--fw-regular);font-style:normal;font-display:swap;}
 :root{
   --ink:#1E2F46;
   --ink-soft:#6B7280;
@@ -51,13 +61,72 @@
   --accent:#D98A4E;
   --navy:#173A63;
   --shadow: 0 10px 25px rgba(30,47,70,0.08);
+
+  /* ===== إعدادات الخطوط المركزية ===== */
+  /* الخط الاحتياطي: للحروف اللاتينية والرموز غير الموجودة في «موج» */
+  --font-fallback: system-ui,-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;
+  --font-heading-main: 'Mawj Main Heading',var(--font-fallback);       /* العناوين الرئيسية */
+  --font-heading-intro: 'Mawj Intro Heading',var(--font-fallback);     /* عناوين التقديم */
+  --font-heading-sub: 'Mawj Sub Heading',var(--font-fallback);         /* العناوين الفرعية */
+  --font-heading-section: 'Mawj Section Heading',var(--font-fallback); /* عناوين الأقسام */
+  --font-body: 'Mawj Body',var(--font-fallback);                       /* النص الأساسي والأزرار والنماذج */
+
+  /* الأحجام */
+  --fs-brand: 38px;
+  --fs-heading-main: 26px;
+  --fs-heading-intro: 16.5px;
+  --fs-intro-lead: 14px;
+  --fs-heading-sub: 21px;
+  --fs-heading-sub-sm: 17px;
+  --fs-heading-section: 19px;
+  --fs-heading-section-sm: 15px;
+  --fs-body: 16px;
+
+  /* الأوزان — «موج» يوفّر 400 فقط؛ ارفع هذه القيم عند إضافة ملف وزن أثقل حقيقي */
+  --fw-regular: 400;
+  --fw-strong: 400;
+  --fw-heading: 400;
+
+  /* ارتفاع الأسطر */
+  --lh-heading-main: 1.5;
+  --lh-heading-intro: 1.6;
+  --lh-heading-sub: 1.5;
+  --lh-heading-section: 1.5;
+  --lh-body: 1.6;
+  --lh-ui: 1.35;
+
+  /* المسافات بين الحروف — صفر للعربية حتى لا يتفكك اتصال الحروف */
+  --ls-heading: 0;
+  --ls-body: 0;
+  --ls-code: 2px;
+  --ls-otp: 10px;
+}
+@media (max-width:640px){
+  :root{ --fs-brand:30px; --fs-heading-main:23px; --fs-heading-intro:15.5px; --fs-heading-sub:19px; --fs-heading-sub-sm:16px; --fs-heading-section:17.5px; }
+}
+@media (min-width:1200px){
+  :root{ --fs-heading-main:28px; --fs-heading-sub:22px; }
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
-body{ background:var(--cream); color:var(--ink); font-family:'Tajawal',sans-serif; min-height:100vh; }
-h1,h2,h3,.brand,.display{font-family:'Cairo',sans-serif;}
-button{font-family:inherit;cursor:pointer;}
-input,select,textarea{font-family:inherit;}
+html{ font-synthesis:none; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body{ background:var(--cream); color:var(--ink); min-height:100vh; font-family:var(--font-body); font-size:var(--fs-body); font-weight:var(--fw-regular); line-height:var(--lh-body); letter-spacing:var(--ls-body); }
+/* العناوين الرئيسية */
+h1,.brand,.display,.authhero-word span{font-family:var(--font-heading-main);font-weight:var(--fw-heading);line-height:var(--lh-heading-main);letter-spacing:var(--ls-heading);}
+h1{font-size:var(--fs-heading-main);}
+/* العناوين الفرعية */
+h2,h3{font-family:var(--font-heading-sub);font-weight:var(--fw-heading);line-height:var(--lh-heading-sub);letter-spacing:var(--ls-heading);}
+h2{font-size:var(--fs-heading-sub);}
+h3{font-size:var(--fs-heading-sub-sm);}
+/* عناوين الأقسام */
+h4,.sectiontitle,.subhead,.mtable th{font-family:var(--font-heading-section);font-weight:var(--fw-heading);line-height:var(--lh-heading-section);letter-spacing:var(--ls-heading);}
+h4{font-size:var(--fs-heading-section-sm);}
+/* عناوين التقديم */
+.offersbar b,.hero p,.pagehead p,.authhero-tagline{font-family:var(--font-heading-intro);font-weight:var(--fw-heading);line-height:var(--lh-heading-intro);letter-spacing:var(--ls-heading);}
+/* الأزرار والقوائم والنماذج ترث خط النص الأساسي */
+button,input,select,textarea,optgroup{font-family:inherit;font-weight:var(--fw-regular);line-height:var(--lh-ui);letter-spacing:inherit;}
+button{cursor:pointer;}
+b,strong,th{font-weight:var(--fw-strong);}
 a{color:inherit;text-decoration:none;}
 .hidden{display:none !important;}
 ::selection{background:var(--saffron);color:var(--ink);}
@@ -67,17 +136,17 @@ a:focus-visible, button:focus-visible, input:focus-visible{ outline:2px solid va
 .topbar{ position:sticky;top:0;z-index:50; background:var(--navy); color:#FFFFFF; padding:14px 20px; display:flex;align-items:center;gap:18px; box-shadow:0 2px 10px rgba(0,0,0,0.15); flex-wrap:wrap; }
 .securestrip{ background:#122E4F; color:#F4DCCA; font-size:11.5px; text-align:center; padding:5px 10px; }
 .securestrip b{ color:#fff; }
-.brand{font-family:'Cairo',sans-serif;font-size:38px;font-weight:800;color:var(--accent);letter-spacing:0.5px;display:flex;align-items:center;gap:6px;cursor:pointer;flex-shrink:0;}
+.brand{font-size:var(--fs-brand);color:var(--accent);display:flex;align-items:center;gap:6px;cursor:pointer;flex-shrink:0;}
 .brand-word{position:relative;display:inline-block;line-height:1.9;padding-top:6px;}
 .searchwrap{flex:1;max-width:420px;position:relative;}
 .searchwrap input{ width:100%;padding:10px 14px;border-radius:24px;border:1px solid rgba(255,255,255,0.25); background:rgba(255,255,255,0.14);color:#FFFFFF;font-size:14px; }
 .searchwrap input::placeholder{color:rgba(255,255,255,0.65);}
 .searchwrap input:focus{outline:2px solid var(--accent);background:rgba(255,255,255,0.2);}
 .navlinks{display:flex;align-items:center;gap:8px;margin-right:auto;flex-shrink:0;flex-wrap:wrap;}
-.navbtn{ background:none;border:none;color:#FFFFFF;font-size:14px;font-weight:500; padding:9px 12px;border-radius:10px;position:relative;white-space:nowrap; transition:background .15s; }
+.navbtn{ background:none;border:none;color:#FFFFFF;font-size:14px;font-weight:var(--fw-strong); padding:9px 12px;border-radius:10px;position:relative;white-space:nowrap; transition:background .15s; }
 .navbtn:hover{background:rgba(255,255,255,0.12);}
 .navbtn.active{background:rgba(217,138,78,0.22);color:var(--accent);}
-.cartbadge{ position:absolute;top:2px;right:2px;background:var(--chili);color:#fff; font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:9px; display:flex;align-items:center;justify-content:center;padding:0 4px; }
+.cartbadge{ position:absolute;top:2px;right:2px;background:var(--chili);color:#fff; font-size:10px;font-weight:var(--fw-strong);min-width:16px;height:16px;border-radius:9px; display:flex;align-items:center;justify-content:center;padding:0 4px; }
 @keyframes bump{0%{transform:scale(1);}40%{transform:scale(1.35);}100%{transform:scale(1);}}
 .bump{animation:bump .3s ease;}
 
@@ -87,7 +156,7 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 @keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 
 /* ===== Buttons ===== */
-.btn{ display:inline-flex;align-items:center;justify-content:center;gap:8px; border:none;border-radius:12px;padding:12px 22px;font-size:15px;font-weight:700; transition:transform .12s, box-shadow .12s; }
+.btn{ display:inline-flex;align-items:center;justify-content:center;gap:8px; border:none;border-radius:12px;padding:12px 22px;font-size:15px;font-weight:var(--fw-strong); transition:transform .12s, box-shadow .12s; }
 .btn:active{transform:scale(0.97);}
 .btn-primary{background:var(--saffron);color:var(--ink);}
 .btn-primary:hover{background:var(--saffron-dark);}
@@ -102,17 +171,17 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 
 /* ===== Hero / offers ===== */
 .hero{ background:linear-gradient(135deg,var(--navy) 0%,#456182 100%); border-radius:20px;padding:30px 28px;color:#FFFFFF;margin-bottom:20px; position:relative;overflow:hidden; }
-.hero h1{font-size:26px;margin:0 0 6px;color:var(--accent);}
-.hero p{margin:0 0 14px;color:#F4DCCA;font-size:14px;}
+.hero h1{margin:0 0 6px;color:var(--accent);}
+.hero p{margin:0 0 14px;color:#F4DCCA;font-size:var(--fs-intro-lead);}
 .hero .etarow{display:flex;gap:10px;flex-wrap:wrap;}
 .hero .etachip{background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25);color:#fff;font-size:12.5px;padding:6px 12px;border-radius:999px;}
 .offersbar{ background:linear-gradient(90deg,var(--accent),#E6B38C);color:var(--ink);border-radius:16px; padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px; }
-.offersbar b{font-family:'Cairo';font-size:16.5px;display:block;}
+.offersbar b{font-size:var(--fs-heading-intro);display:block;}
 .offersbar span{font-size:12.5px;opacity:.95;}
-.sectiontitle{font-size:19px;font-weight:700;margin:26px 0 14px;display:flex;align-items:center;gap:8px;}
+.sectiontitle{font-size:var(--fs-heading-section);margin:26px 0 14px;display:flex;align-items:center;gap:8px;}
 
 /* ===== Category chips ===== */
-.catchip{ flex-shrink:0;background:var(--card);border:1.5px solid var(--sand);color:var(--ink-soft); font-size:13.5px;font-weight:600;padding:8px 16px;border-radius:999px;transition:.15s; }
+.catchip{ flex-shrink:0;background:var(--card);border:1.5px solid var(--sand);color:var(--ink-soft); font-size:13.5px;font-weight:var(--fw-strong);padding:8px 16px;border-radius:999px;transition:.15s; }
 .catchip.active,.catchip:hover{background:var(--navy);border-color:var(--navy);color:var(--accent);}
 
 /* ===== Shop / product grid (rcard) ===== */
@@ -121,17 +190,17 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 .rcard:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(35,51,70,0.14);}
 .rcard .icon{ width:60px;height:60px;border-radius:14px;background:var(--sand); display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:4px;overflow:hidden; }
 .rcard .icon img{ width:100%;height:100%;object-fit:cover; }
-.rcard .off{position:absolute;top:12px;left:12px;background:var(--accent);color:var(--ink);font-size:11px;font-weight:800;padding:3px 9px;border-radius:8px;}
+.rcard .off{position:absolute;top:12px;left:12px;background:var(--accent);color:var(--ink);font-size:11px;font-weight:var(--fw-strong);padding:3px 9px;border-radius:8px;}
 .rcard h3{font-size:15.5px;margin:0;}
 .rcard .cat{font-size:12px;color:var(--ink-soft);opacity:.75;}
 .rcard .meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--ink-soft);margin-top:auto;}
-.rcard .meta .rating{color:var(--saffron-dark);font-weight:700;font-variant-numeric:tabular-nums;}
+.rcard .meta .rating{color:var(--saffron-dark);font-weight:var(--fw-strong);font-variant-numeric:tabular-nums;}
 .rcard .meta .old{text-decoration:line-through;color:var(--sand-dark);font-size:11px;margin-inline-start:4px;}
 .empty{text-align:center;padding:50px 20px;color:var(--ink-soft);}
 .empty .bigicon{font-size:44px;margin-bottom:10px;}
 
 /* ===== Shop / product detail (rhead + mealrow) ===== */
-.backbtn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--ink-soft);margin-bottom:14px;background:none;border:none;}
+.backbtn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:var(--fw-strong);color:var(--ink-soft);margin-bottom:14px;background:none;border:none;}
 .rhead{display:flex;gap:18px;align-items:center;background:var(--card);border-radius:18px;padding:20px;border:1px solid var(--sand);margin-bottom:20px;}
 .rhead .icon{width:80px;height:80px;border-radius:18px;background:var(--sand);display:flex;align-items:center;justify-content:center;font-size:42px;flex-shrink:0;overflow:hidden;}
 .rhead .icon img{width:100%;height:100%;object-fit:cover;}
@@ -142,14 +211,14 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 .mealrow .micon{width:48px;height:48px;border-radius:12px;background:var(--sand);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;overflow:hidden;}
 .mealrow .micon img{width:100%;height:100%;object-fit:cover;}
 .mealrow .info{flex:1;min-width:0;}
-.mealrow .info h4{margin:0 0 3px;font-size:15px;}
+.mealrow .info h4{margin:0 0 3px;}
 .mealrow .info p{margin:0 0 5px;font-size:12.5px;color:var(--ink-soft);opacity:.8;line-height:1.5;}
-.mealrow .price{font-weight:700;color:var(--saffron-dark);font-variant-numeric:tabular-nums;font-size:14px;}
+.mealrow .price{font-weight:var(--fw-strong);color:var(--saffron-dark);font-variant-numeric:tabular-nums;font-size:14px;}
 .stepper{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.stepper button{ width:30px;height:30px;border-radius:50%;border:1.5px solid var(--saffron);background:var(--card); font-size:16px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center; }
+.stepper button{ width:30px;height:30px;border-radius:50%;border:1.5px solid var(--saffron);background:var(--card); font-size:16px;font-weight:var(--fw-strong);color:var(--ink);display:flex;align-items:center;justify-content:center; }
 .stepper button:hover{background:var(--saffron);color:var(--ink);}
-.stepper .qty{min-width:18px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;}
-.addbtn{background:var(--saffron);color:var(--ink);border:none;border-radius:10px;padding:8px 16px;font-size:13px;font-weight:700;flex-shrink:0;}
+.stepper .qty{min-width:18px;text-align:center;font-weight:var(--fw-strong);font-variant-numeric:tabular-nums;}
+.addbtn{background:var(--saffron);color:var(--ink);border:none;border-radius:10px;padding:8px 16px;font-size:13px;font-weight:var(--fw-strong);flex-shrink:0;}
 .addbtn:hover{background:var(--saffron-dark);color:var(--ink);}
 
 /* ===== Receipt (cart/checkout signature) ===== */
@@ -158,30 +227,30 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 .receipt-body{padding:22px 24px;border-bottom:2px dashed var(--sand-dark);}
 .receipt-body:last-of-type{border-bottom:none;}
 .receipt-head{text-align:center;margin-bottom:16px;}
-.receipt-head .rid{font-size:11px;letter-spacing:2px;color:var(--ink-soft);opacity:.7;text-transform:uppercase;}
+.receipt-head .rid{font-size:11px;letter-spacing:var(--ls-code);color:var(--ink-soft);opacity:.7;text-transform:uppercase;}
 .receipt-head h2{margin:6px 0 2px;font-size:20px;}
 .rline{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px dotted var(--sand-dark);font-size:13.5px;}
 .rline:last-child{border-bottom:none;}
 .rline .lname{flex:1;}
 .rline .lname small{display:block;color:var(--ink-soft);opacity:.7;font-size:11px;margin-top:2px;}
-.rline .lprice{font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap;}
+.rline .lprice{font-variant-numeric:tabular-nums;font-weight:var(--fw-strong);white-space:nowrap;}
 .rtotal{display:flex;justify-content:space-between;padding:10px 0;font-size:14px;}
-.usd-eq{font-size:11.5px;color:var(--ink-soft);font-weight:500;}
-.rtotal.grand{font-size:18px;font-weight:800;color:var(--ink);border-top:2px dashed var(--sand-dark);margin-top:6px;padding-top:14px;}
+.usd-eq{font-size:11.5px;color:var(--ink-soft);font-weight:var(--fw-strong);}
+.rtotal.grand{font-size:18px;font-weight:var(--fw-strong);color:var(--ink);border-top:2px dashed var(--sand-dark);margin-top:6px;padding-top:14px;}
 .cartqty{display:flex;align-items:center;gap:6px;}
-.cartqty button{width:24px;height:24px;border-radius:50%;border:1px solid var(--sand-dark);background:var(--cream);font-size:13px;font-weight:700;}
-.cartqty .qty{min-width:16px;text-align:center;font-weight:700;font-size:13px;}
-.rmbtn{background:none;border:none;color:var(--chili);font-size:12px;font-weight:700;text-decoration:underline;}
+.cartqty button{width:24px;height:24px;border-radius:50%;border:1px solid var(--sand-dark);background:var(--cream);font-size:13px;font-weight:var(--fw-strong);}
+.cartqty .qty{min-width:16px;text-align:center;font-weight:var(--fw-strong);font-size:13px;}
+.rmbtn{background:none;border:none;color:var(--chili);font-size:12px;font-weight:var(--fw-strong);text-decoration:underline;}
 
 /* ===== Forms ===== */
 .formgrid{display:flex;flex-direction:column;gap:14px;}
-.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--ink-soft);}
+.field label{display:block;font-size:13px;font-weight:var(--fw-strong);margin-bottom:6px;color:var(--ink-soft);}
 .field input,.field select,.field textarea{ width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid var(--sand-dark); background:var(--card);font-size:14px;color:var(--ink); }
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--saffron);box-shadow:0 0 0 3px rgba(217,138,78,0.3);}
 .field textarea{resize:vertical;min-height:70px;}
 .field .hint-inline{font-size:11.5px;color:var(--ink-soft);opacity:.75;margin-top:5px;}
 .field .error{font-size:11.5px;color:var(--chili);margin-top:5px;display:none;}
-.otp-input{letter-spacing:10px;font-size:20px;font-weight:800;text-align:center;}
+.otp-input{letter-spacing:var(--ls-otp);font-size:20px;font-weight:var(--fw-strong);text-align:center;}
 .formcard{background:var(--card);border-radius:16px;padding:24px;border:1px solid var(--sand);max-width:480px;margin:0 auto;box-shadow:var(--shadow);}
 .hint{font-size:12px;color:var(--ink-soft);opacity:.75;text-align:center;margin-top:14px;}
 .securenote{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;color:var(--ink-soft);margin-top:14px;}
@@ -196,8 +265,8 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 }
 .qrcard .qrimg-wrap img{width:96px;height:96px;display:block;border-radius:4px;}
 .qrcard .qrinfo{flex:1;min-width:0;color:#FFFFFF;}
-.qrcard .qrinfo .qrlabel{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--accent);font-weight:700;margin-bottom:6px;}
-.qrcard .qrinfo .qrname{font-size:16px;font-weight:800;margin-bottom:2px;}
+.qrcard .qrinfo .qrlabel{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--accent);font-weight:var(--fw-strong);margin-bottom:6px;}
+.qrcard .qrinfo .qrname{font-size:16px;font-weight:var(--fw-strong);margin-bottom:2px;}
 .qrcard .qrinfo .qrid{font-size:11px;color:#F4DCCA;font-family:monospace;direction:ltr;text-align:right;word-break:break-all;opacity:.85;}
 .qrcard .qrinfo .qrhint{font-size:11.5px;color:#F4DCCA;margin-top:8px;line-height:1.6;}
 
@@ -217,8 +286,8 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 .authhero-mark{display:inline-block;}
 .authhero-mark img{width:76px;height:auto;display:block;animation:pegasusFly 3.2s ease-in-out infinite;}
 .authhero-word{margin-top:2px;animation:floatY 3s ease-in-out infinite;animation-delay:.15s;}
-.authhero-word span{font-family:'Cairo',sans-serif;font-weight:800;font-size:32px;color:var(--navy);}
-.authhero-tagline{margin-top:10px;font-size:13.5px;color:var(--ink-soft);font-weight:500;min-height:18px;}
+.authhero-word span{font-size:32px;color:var(--navy);}
+.authhero-tagline{margin-top:10px;font-size:13.5px;color:var(--ink-soft);font-weight:var(--fw-strong);min-height:18px;}
 .authhero-tagline .cursor{display:inline-block;width:2px;height:13px;background:var(--saffron-dark);margin-inline-start:3px;vertical-align:middle;animation:blink 0.8s step-end infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
 .authhero-dots{display:flex;justify-content:center;gap:5px;margin-top:14px;}
@@ -237,7 +306,7 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 .authhero-social button{
   flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
   border:1.5px solid var(--sand-dark);background:var(--card);border-radius:12px;padding:10px 6px;
-  font-size:11px;font-weight:600;color:var(--ink-soft);
+  font-size:11px;font-weight:var(--fw-strong);color:var(--ink-soft);
 }
 .authhero-social button:hover{border-color:var(--saffron);color:var(--ink);}
 .authhero-social button .ic{font-size:16px;}
@@ -246,7 +315,7 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 .authhero-features .af:first-child{border-left:none;}
 .authhero-features .af .ic{font-size:17px;display:block;margin-bottom:4px;}
 .authhero-manual{max-width:480px;margin:0 auto 10px;text-align:center;font-size:12.5px;color:var(--ink-soft);}
-.authtabs button{flex:1;background:none;border:none;padding:10px;border-radius:9px;font-weight:700;font-size:13.5px;color:var(--ink-soft);}
+.authtabs button{flex:1;background:none;border:none;padding:10px;border-radius:9px;font-weight:var(--fw-strong);font-size:13.5px;color:var(--ink-soft);}
 .authtabs button.active{background:var(--card);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,0.08);}
 
 /* ===== Orders ===== */
@@ -256,22 +325,22 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 .ordercard .top b{font-size:14px;}
 .ordercard .items{font-size:12.5px;color:var(--ink-soft);margin-bottom:8px;}
 .ordercard .bottom{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;}
-.statuspill{display:inline-block;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(34,197,94,0.14);color:var(--herb-dark);}
+.statuspill{display:inline-block;font-size:11.5px;font-weight:var(--fw-strong);padding:4px 12px;border-radius:20px;background:rgba(34,197,94,0.14);color:var(--herb-dark);}
 .orderstatus{display:flex;align-items:flex-start;justify-content:space-between;margin:14px 0 6px;position:relative;}
 .orderstatus::before{content:'';position:absolute;top:11px;right:16.6%;left:16.6%;height:2px;background:var(--sand);z-index:0;}
 .orderstatus .ostep{position:relative;z-index:1;flex:1;text-align:center;font-size:10.5px;color:var(--ink-soft);line-height:1.4;}
 .orderstatus .ostep .odot{width:22px;height:22px;border-radius:50%;background:var(--card);border:2px solid var(--sand-dark);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:11px;color:var(--ink-soft);transition:.2s;}
 .orderstatus .ostep.done .odot{background:var(--herb);border-color:var(--herb);color:#fff;}
 .orderstatus .ostep.active .odot{background:var(--saffron);border-color:var(--saffron-dark);color:var(--ink);box-shadow:0 0 0 4px rgba(217,138,78,0.25);}
-.orderstatus .ostep.done,.orderstatus .ostep.active{color:var(--ink);font-weight:700;}
+.orderstatus .ostep.done,.orderstatus .ostep.active{color:var(--ink);font-weight:var(--fw-strong);}
 
 /* ===== Admin & merchant dashboards ===== */
 .admingrid{display:grid;grid-template-columns:200px 1fr;gap:24px;}
 .adminnav{display:flex;flex-direction:column;gap:6px;}
-.adminnav button{ text-align:right;background:none;border:none;padding:11px 14px;border-radius:10px;font-size:14px;font-weight:600;color:var(--ink-soft); }
+.adminnav button{ text-align:right;background:none;border:none;padding:11px 14px;border-radius:10px;font-size:14px;font-weight:var(--fw-strong);color:var(--ink-soft); }
 .adminnav button.active{background:var(--navy);color:var(--accent);}
 .admincard{background:var(--card);border-radius:16px;padding:22px;border:1px solid var(--sand);}
-.admincard h3{margin:0 0 16px;font-size:17px;}
+.admincard h3{margin:0 0 16px;}
 .adminlist{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
 .adminrow{display:flex;align-items:center;gap:12px;padding:10px;border:1px solid var(--sand);border-radius:10px;}
 .adminrow .ai{font-size:22px;width:38px;height:38px;background:var(--sand);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
@@ -280,12 +349,12 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 .adminrow .at strong{display:block;}
 .adminrow .at span{color:var(--ink-soft);font-size:12px;}
 .delbtn{background:none;border:none;color:var(--chili);font-size:18px;line-height:1;padding:4px 8px;}
-.subhead{font-size:13px;font-weight:700;color:var(--ink-soft);margin:18px 0 8px;display:flex;align-items:center;gap:6px;}
-.statuscard{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;margin-bottom:16px;font-size:13.5px;font-weight:700;}
+.subhead{font-size:13px;color:var(--ink-soft);margin:18px 0 8px;display:flex;align-items:center;gap:6px;}
+.statuscard{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;margin-bottom:16px;font-size:13.5px;font-weight:var(--fw-strong);}
 .statuscard.on{background:rgba(34,197,94,0.12);color:var(--herb-dark);}
 .statuscard.off{background:rgba(245,158,11,0.12);color:#B45309;}
 .codeblock{background:var(--ink);color:#F8F5EF;border-radius:10px;padding:14px;font-family:monospace;font-size:11.5px;line-height:1.7;direction:ltr;text-align:left;overflow-x:auto;}
-.viewonlybanner{background:#FCF6F1;border:1px solid #F9EDE4;color:var(--ink);font-size:13px;font-weight:700;padding:12px 16px;border-radius:10px;display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.viewonlybanner{background:#FCF6F1;border:1px solid #F9EDE4;color:var(--ink);font-size:13px;font-weight:var(--fw-strong);padding:12px 16px;border-radius:10px;display:flex;align-items:center;gap:8px;margin-bottom:16px;}
 .mtable{width:100%;border-collapse:collapse;}
 .mtable th{background:var(--cream);text-align:right;font-size:12px;color:var(--ink-soft);padding:10px 12px;border-bottom:1px solid var(--sand);}
 .mtable td{padding:10px 12px;border-bottom:1px solid var(--sand);font-size:13.5px;}
@@ -296,7 +365,7 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 .mold{text-decoration:line-through;color:var(--sand-dark);font-size:11px;margin-inline-start:5px;}
 
 /* ===== Toast ===== */
-#toast{ position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120%); opacity:0;pointer-events:none; background:var(--navy);color:#FFFFFF;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600; z-index:200;transition:transform .25s ease, opacity .25s ease;box-shadow:0 10px 25px rgba(0,0,0,0.25); display:flex;align-items:center;gap:8px;max-width:90vw;text-align:center; }
+#toast{ position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120%); opacity:0;pointer-events:none; background:var(--navy);color:#FFFFFF;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:var(--fw-strong); z-index:200;transition:transform .25s ease, opacity .25s ease;box-shadow:0 10px 25px rgba(0,0,0,0.25); display:flex;align-items:center;gap:8px;max-width:90vw;text-align:center; }
 #toast.toast-error{background:var(--chili-dark);}
 #toast.toast-success{background:var(--herb-dark);}
 
@@ -313,12 +382,11 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
 
 .flexbetween{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
 .pagehead{margin-bottom:20px;}
-.pagehead h2{font-size:21px;margin:0 0 4px;}
+.pagehead h2{margin:0 0 4px;}
 .pagehead p{margin:0;color:var(--ink-soft);font-size:13.5px;opacity:.8;}
 
 @media (max-width:640px){
   .topbar{padding:12px;gap:10px;}
-  .brand{font-size:30px;}
   .brand .tag{display:none;}
   .searchwrap{display:block;order:5;flex-basis:100%;max-width:none;margin-top:8px;}
   .navlinks{flex-wrap:wrap;justify-content:flex-end;row-gap:4px;}
@@ -405,7 +473,7 @@ main{max-width:1080px;margin:0 auto;padding:24px 20px 80px;}
         <div class="field"><label>عنوان التوصيل</label><textarea id="ckAddress" required></textarea></div>
         <div class="field">
           <label>طريقة الدفع</label>
-          <div style="display:flex;align-items:center;gap:8px;background:var(--cream);border:1.5px solid var(--saffron);border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px;">
+          <div style="display:flex;align-items:center;gap:8px;background:var(--cream);border:1.5px solid var(--saffron);border-radius:10px;padding:10px 14px;font-weight:var(--fw-strong);font-size:14px;">
             💳 شام كاش <span style="margin-inline-start:auto;background:var(--saffron);color:var(--ink);font-size:10.5px;padding:2px 8px;border-radius:999px;">طريقة الدفع الوحيدة</span>
           </div>
         </div>
@@ -1308,9 +1376,9 @@ function renderShopProducts(shopId){
       <div class="mealrow">
         <div class="micon">${productIconHtml(p)}</div>
         <div class="info">
-          <h4>${esc(p.name)} <span style="font-weight:400;color:var(--ink-soft);font-size:12px;">(${esc(p.unit)})</span></h4>
+          <h4>${esc(p.name)} <span style="font-weight:var(--fw-regular);color:var(--ink-soft);font-size:12px;">(${esc(p.unit)})</span></h4>
           <p>${esc(p.desc)}</p>
-          <div class="price">${p.oldPrice ? `<span style="text-decoration:line-through;color:var(--sand-dark);font-weight:400;margin-inline-end:6px;">${fmt(num(p.oldPrice))}</span>` : ''}${fmt(num(p.price))} <span class="usd-eq">(${fmtProductUSD(p)})</span></div>
+          <div class="price">${p.oldPrice ? `<span style="text-decoration:line-through;color:var(--sand-dark);font-weight:var(--fw-regular);margin-inline-end:6px;">${fmt(num(p.oldPrice))}</span>` : ''}${fmt(num(p.price))} <span class="usd-eq">(${fmtProductUSD(p)})</span></div>
         </div>
         ${qty > 0
           ? `<div class="stepper">
@@ -1550,7 +1618,7 @@ function renderInvoice(){
       ${safeSrc(o.paymentProof) ? `
       <div class="receipt-notch"></div>
       <div class="receipt-body">
-        <div style="font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:8px;">📎 إثبات التحويل عبر شام كاش</div>
+        <div style="font-size:12.5px;font-weight:var(--fw-strong);color:var(--ink);margin-bottom:8px;">📎 إثبات التحويل عبر شام كاش</div>
         ${previewImgHtml(o.paymentProof, 'width:100%;border-radius:10px;display:block;')}
       </div>` : ''}
     </div>
@@ -1600,7 +1668,7 @@ function renderShopApplicationForm(user){
   const email = user.email || '';
   document.getElementById('merchantWrap').innerHTML = `
     <div class="formcard">
-      <h3 style="margin:0 0 6px;font-size:17px;">🆕 قدّم طلب فتح محل جديد</h3>
+      <h3 style="margin:0 0 6px;">🆕 قدّم طلب فتح محل جديد</h3>
       <p class="hint" style="margin-bottom:16px;">حسابك (${esc(email)}) غير مرتبط بمحل بعد. عبّي البيانات وراح تراجع إدارة المنصة طلبك.</p>
       <form class="formgrid" onsubmit="submitShopApplication(event, '${escJs(email)}')">
         <div class="field"><label>اسم المحل</label><input id="appShopName" required></div>
@@ -1644,7 +1712,7 @@ function renderApplicationStatus(shop, status){
   document.getElementById('merchantWrap').innerHTML = `
     <div class="formcard" style="text-align:center;">
       <div style="font-size:40px;margin-bottom:10px;">${info.icon}</div>
-      <h3 style="margin:0 0 8px;font-size:17px;color:${info.color};">${info.title}</h3>
+      <h3 style="margin:0 0 8px;color:${info.color};">${info.title}</h3>
       <p class="hint">${info.text}</p>
       <div style="background:var(--cream);border-radius:10px;padding:12px 14px;margin-top:14px;font-size:13px;text-align:right;">
         <div><b>المحل:</b> ${esc(shop.name)}</div>
@@ -1803,15 +1871,15 @@ function renderMerchantTabContent(){
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;">
           <div style="background:var(--cream);border-radius:12px;padding:14px;">
             <div style="font-size:11.5px;color:var(--ink-soft);margin-bottom:4px;">إجمالي المبيعات (قبل العمولة)</div>
-            <div style="font-size:18px;font-weight:800;color:var(--ink);">${fmt(stats.gross)}</div>
+            <div style="font-size:18px;font-weight:var(--fw-strong);color:var(--ink);">${fmt(stats.gross)}</div>
           </div>
           <div style="background:#FFF3E9;border-radius:12px;padding:14px;">
             <div style="font-size:11.5px;color:#9A5B12;margin-bottom:4px;">عمولة المنصة (${fmt(COMMISSION_PER_ITEM)} × ${stats.qty} قطعة)</div>
-            <div style="font-size:18px;font-weight:800;color:var(--chili-dark);">− ${fmt(stats.commission)}</div>
+            <div style="font-size:18px;font-weight:var(--fw-strong);color:var(--chili-dark);">− ${fmt(stats.commission)}</div>
           </div>
           <div style="background:#EEF9F1;border-radius:12px;padding:14px;grid-column:1/-1;">
             <div style="font-size:11.5px;color:var(--herb-dark);margin-bottom:4px;">صافي أرباحك</div>
-            <div style="font-size:22px;font-weight:800;color:var(--herb-dark);">${fmt(stats.net)}</div>
+            <div style="font-size:22px;font-weight:var(--fw-strong);color:var(--herb-dark);">${fmt(stats.net)}</div>
           </div>
         </div>
         <div class="subhead">📦 تفصيل حسب المنتج</div>
@@ -1825,7 +1893,7 @@ function renderMerchantTabContent(){
                 <td>${esc(p.qty)}</td>
                 <td>${fmt(p.gross)}</td>
                 <td style="color:var(--chili-dark);">− ${fmt(p.commission)}</td>
-                <td style="color:var(--herb-dark);font-weight:700;">${fmt(p.net)}</td>
+                <td style="color:var(--herb-dark);font-weight:var(--fw-strong);">${fmt(p.net)}</td>
               </tr>
             `).join('')}
           </tbody>
@@ -2108,7 +2176,7 @@ function renderAdmin(){
     if(appData.shops.length === 0) html += `<p class="hint">لا توجد محلات بعد</p>`;
     appData.shops.forEach(s => {
       const st = s.status || 'active';
-      const statusBadge = st === 'active' ? '' : st === 'pending' ? ' · <span style="color:var(--accent);font-weight:700;">⏳ قيد المراجعة</span>' : ' · <span style="color:var(--chili);font-weight:700;">❌ مرفوض</span>';
+      const statusBadge = st === 'active' ? '' : st === 'pending' ? ' · <span style="color:var(--accent);font-weight:var(--fw-strong);">⏳ قيد المراجعة</span>' : ' · <span style="color:var(--chili);font-weight:var(--fw-strong);">❌ مرفوض</span>';
       html += `
         <div class="adminrow">
           <div class="ai">${esc(s.icon)}</div>
@@ -2196,7 +2264,7 @@ function renderAdmin(){
       </div>
       <div class="subhead">📝 خطوات التفعيل</div>
       <ol style="font-size:13.5px;color:var(--ink-soft);line-height:2;padding-inline-start:20px;">
-        <li>أنشئ مشروع مجاني على <a href="#" onclick="return false;" style="color:var(--ink);font-weight:700;text-decoration:underline;">supabase.com</a></li>
+        <li>أنشئ مشروع مجاني على <a href="#" onclick="return false;" style="color:var(--ink);font-weight:var(--fw-strong);text-decoration:underline;">supabase.com</a></li>
         <li>من SQL Editor نفّذ الأمر بالأسفل لإنشاء جدول التخزين وقواعد الأمان</li>
         <li>فعّل "Authentication" → Providers → فعّل مزوّد <b>Google</b> (وEmail مفعّل افتراضيًا)</li>
         <li>من Authentication → URL Configuration، أضف رابط موقعك بعد رفعه ضمن Redirect URLs</li>
