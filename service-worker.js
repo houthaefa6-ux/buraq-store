@@ -10,7 +10,7 @@
    بعد أي تعديل على الموقع: ارفع الرقم في CACHE_VERSION لتحديث الكاش.
    ======================================================================= */
 
-const CACHE_VERSION = 'buraq-v2';
+const CACHE_VERSION = 'buraq-v3';
 const CORE_ASSETS = [
   './',
   './index.html',

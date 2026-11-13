@@ -39,12 +39,14 @@
    لكل فئة نصية ملف مستقل. الملف الأصلي يحتوي وزنًا واحدًا فقط (Regular 400)
    بلا مائل ولا محاور متغيّرة، لذلك كل الملفات تحمل الرسم نفسه والوزن نفسه؛
    التمييز بين الفئات يتم بالحجم وارتفاع السطر من المتغيّرات أدناه.
+   الأرقام (0-9) وعلامة % مستثناة عبر unicode-range لتُعرض بالشكل الإنجليزي
+   من الخط الاحتياطي، لأن «موج» يرسمها بالشكل الهندي.
    ===================================================================== */
-@font-face{font-family:'Mawj Main Heading';src:url('fonts/Mawj-MainHeading.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
-@font-face{font-family:'Mawj Intro Heading';src:url('fonts/Mawj-IntroHeading.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
-@font-face{font-family:'Mawj Sub Heading';src:url('fonts/Mawj-SubHeading.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
-@font-face{font-family:'Mawj Section Heading';src:url('fonts/Mawj-SectionHeading.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
-@font-face{font-family:'Mawj Body';src:url('fonts/Mawj-Body.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'Mawj Main Heading';src:url('fonts/Mawj-MainHeading.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-0024,U+0026-002F,U+003A-10FFFF;}
+@font-face{font-family:'Mawj Intro Heading';src:url('fonts/Mawj-IntroHeading.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-0024,U+0026-002F,U+003A-10FFFF;}
+@font-face{font-family:'Mawj Sub Heading';src:url('fonts/Mawj-SubHeading.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-0024,U+0026-002F,U+003A-10FFFF;}
+@font-face{font-family:'Mawj Section Heading';src:url('fonts/Mawj-SectionHeading.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-0024,U+0026-002F,U+003A-10FFFF;}
+@font-face{font-family:'Mawj Body';src:url('fonts/Mawj-Body.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-0024,U+0026-002F,U+003A-10FFFF;}
 :root{
   --ink:#1E2F46;
   --ink-soft:#6B7280;
